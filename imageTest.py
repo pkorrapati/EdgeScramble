@@ -27,6 +27,8 @@ edgeImage = cv2.Canny(imgBW, 200, 255)
 # thr is threshold to adjust minimum 'whiteness' of pixels if grayscale is used. [optional]
 rows, cols = scramble(edgeImage, pix=15, thr=200)
 
+## ALTERNATE: USE SCRAMBLE2
+# rows, cols = scramble2(edgeImage, pix=15, thr=200)
 
 # Copy the original RGB Image
 # Set all channels to 255 at the Scrambled locations
