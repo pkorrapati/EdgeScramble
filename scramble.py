@@ -12,8 +12,8 @@ def scramble(img, pix=5, thr=200):
 
     rows, cols = np.where(img >= thr)
 
-    rows =  limit(np.add(rows, np.round((np.random.rand(np.size(rows)) * 2 * pix) - pix)), rowMax).astype(int)
-    cols =  limit(np.add(cols, np.round((np.random.rand(np.size(cols)) * 2 * pix) - pix)), colMax).astype(int)
+    rows =  limit(np.add(rows, np.round(np.random.uniform(-pix, pix, np.size(rows)))), rowMax).astype(int)
+    cols =  limit(np.add(cols, np.round(np.random.uniform(-pix, pix, np.size(cols)))), colMax).astype(int)
 
     return rows, cols
 
@@ -27,11 +27,12 @@ def scramble2(img, pix=5, thr=200):
     rowMax, colMax = img.shape    
 
     rows, cols = np.where(img >= thr)
+    
+    ang = np.random.uniform(0, 2 * pi, np.size(rows))
+    rad = np.random.uniform(0, pix, np.size(rows))
 
-    ang = np.random.rand(np.size(rows)) * 2 * pi
-
-    rows =  limit(np.add(rows, np.round(np.dot(pix, np.sin(ang)))), rowMax).astype(int)
-    cols =  limit(np.add(cols, np.round(np.dot(pix, np.cos(ang)))), colMax).astype(int)
+    rows =  limit(np.add(rows, np.round(np.multiply(rad, np.sin(ang)))), rowMax).astype(int)
+    cols =  limit(np.add(cols, np.round(np.multiply(rad, np.cos(ang)))), colMax).astype(int)
 
     return rows, cols
 
