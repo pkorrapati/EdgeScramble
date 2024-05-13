@@ -22,7 +22,6 @@ cv2.imshow('Gray', imgGray)
 # FOR TESTING USE:
 # Create a blank image
 r,c = np.shape(imgGray)
-# blank = np.ones([r,c])*255
 blank = np.zeros([r,c])
 
 # [Optional] Convert to Binary
@@ -35,7 +34,7 @@ edgeImage = cv2.Canny(imgBW, 200, 255)
 # Send the binary edgeImage to scramble
 # pix is number of pixels to randomly move the edge by
 # thr is threshold to adjust minimum 'whiteness' of pixels if grayscale is used. [optional]
-rows, cols = scramble2(edgeImage, pix=15, thr=200)
+rows, cols = scramble(edgeImage, pix=15, thr=200)
 
 ## ALTERNATE: USE SCRAMBLE2
 # rows, cols = scramble2(edgeImage, pix=15, thr=200)
