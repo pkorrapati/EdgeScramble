@@ -1,28 +1,19 @@
 import cv2
-import numpy as np
+import numpy
 
-from scramble import *
-
-ORANGE_MIN = np.array([0, 68, 170], np.uint8)
-ORANGE_MAX = np.array([62, 217, 255], np.uint8)
+import edgescramble.edgescramble as es
 
 # START: 
 # Read image in color
-img = cv2.imread("1131.jpg")
-
-# Convert to HSV
-imgHSV = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+img = cv2.imread("images/SmallTriangle.png")
 
 # Convert to Gray
-# imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) 
-imgGray = cv2.inRange(imgHSV, ORANGE_MIN, ORANGE_MAX)
-
-cv2.imshow('Gray', imgGray)
+imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) 
 
 # FOR TESTING USE:
 # Create a blank image
 r,c = np.shape(imgGray)
-blank = np.zeros([r,c])
+blank = numpy.ones([r,c])*255
 
 # [Optional] Convert to Binary
 imgBW = cv2.threshold(imgGray, 250, 255, cv2.THRESH_BINARY)[1]
@@ -34,17 +25,21 @@ edgeImage = cv2.Canny(imgBW, 200, 255)
 # Send the binary edgeImage to scramble
 # pix is number of pixels to randomly move the edge by
 # thr is threshold to adjust minimum 'whiteness' of pixels if grayscale is used. [optional]
-rows, cols = scramble(edgeImage, pix=15, thr=200)
+rows, cols = es.scramble(edgeImage, pix=15, thr=200)
 
 ## ALTERNATE: USE SCRAMBLE2
-# rows, cols = scramble2(edgeImage, pix=15, thr=200)
+# rows, cols = es.scramble2(edgeImage, pix=15, thr=200)
+
+# Copy the original RGB Image
+# Set all channels to 255 at the Scrambled locations
+scramImg = img.copy()
+scramImg[rows, cols, :] = 255
 
 # FOR TESTING USE
-blank[rows, cols] = 255
+blank[rows, cols] = 0
 
 # SHOW Unedited Edge
-# cv2.imshow('Edge', cv2.bitwise_not(edgeImage))
-cv2.imshow('Edge', edgeImage)
+cv2.imshow('Edge', cv2.bitwise_not(edgeImage))
 
 # SHOW Scrambled Edge
 cv2.imshow('Scrambled', blank)
